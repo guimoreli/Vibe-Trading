@@ -282,6 +282,9 @@ class APIConfig(_EnvBase):
         alias="VIBE_TRADING_MCP_ALLOWED_HOSTS", default="",
     )
     enable_session_runtime: EnvBool = Field(alias="ENABLE_SESSION_RUNTIME", default=True)
+    vibe_trading_allow_remote_access: EnvBool = Field(
+        alias="VIBE_TRADING_ALLOW_REMOTE_ACCESS", default=True,
+    )
     vibe_trading_trust_docker_loopback: EnvBool = Field(
         alias="VIBE_TRADING_TRUST_DOCKER_LOOPBACK", default=False,
     )

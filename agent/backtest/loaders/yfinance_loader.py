@@ -70,6 +70,12 @@ def _to_yfinance_symbol(code: str) -> str:
         return upper[:-5] + "-USD"
     if upper.endswith("-USDC"):
         return upper[:-5] + "-USD"
+    # Brazil B3: PETR4 -> PETR4.SA, VALE3 -> VALE3.SA, BOVA11 -> BOVA11.SA
+    import re
+    if re.match(r"^[A-Z]{4}(3|4|5|6|11|34)$", upper):
+        return f"{upper}.SA"
+    if upper.endswith(".BVMF") or upper.endswith(".BZ"):
+        return f"{upper.rsplit('.', 1)[0]}.SA"
     # India NSE/BSE (RELIANCE.NS, 500325.BO), Korea KRX (005930.KS,
     # 247540.KQ), Canada TSX/TSXV (TD.TO, PNG.V), and Vietnam HOSE (VIC.VN):
     # yfinance carries these suffixes as-is.
