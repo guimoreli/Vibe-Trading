@@ -61,6 +61,8 @@ export const router = createBrowserRouter([
       { path: "/", element: wrap(Agent) },
       { path: "/about", element: wrap(Home) },
       { path: "/guide", element: wrap(Guide) },
+      { path: "/guia", element: wrap(Guide) },
+      { path: "/manual", element: wrap(Guide) },
       { path: "/agent", element: wrap(Agent) },
       { path: "/runtime", element: wrap(Runtime) },
       { path: "/scheduled", element: wrap(Scheduled) },
