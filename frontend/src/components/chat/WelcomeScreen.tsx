@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ChevronDown, TrendingUp, Globe, Sparkles, Users, UserCircle2, NotebookPen, Landmark, Gem } from "lucide-react";
+import { Link } from "react-router";
+import { ChevronDown, TrendingUp, Globe, Sparkles, Users, UserCircle2, NotebookPen, Landmark, Gem, BookOpen, ArrowRight } from "lucide-react";
 import { BrandMark } from "@/components/common/BrandMark";
 
 interface Example {
@@ -255,6 +256,16 @@ export function WelcomeScreen({ onExample }: Props) {
           <p className="mt-3 text-sm text-muted-foreground">
             {t("welcome.taskSubtitle" as any)}
           </p>
+          <div className="mt-4">
+            <Link
+              to="/guia"
+              className="inline-flex items-center gap-2.5 rounded-xl border border-primary/40 bg-primary/10 px-5 py-2.5 text-sm font-semibold text-primary shadow-sm hover:bg-primary/20 hover:border-primary transition-all"
+            >
+              <BookOpen className="h-4 w-4" />
+              <span>📘 Como Usar: Guia Prático Passo a Passo (Opções e Ações)</span>
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
 
         <div
