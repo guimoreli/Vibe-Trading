@@ -14,7 +14,8 @@ import {
   ArrowRight,
   HelpCircle,
   Calculator,
-  Target
+  Target,
+  Zap
 } from "lucide-react";
 
 interface PromptCardProps {
@@ -71,7 +72,7 @@ function PromptCard({ title, category, badgeColor, prompt, description }: Prompt
 }
 
 export function Guide() {
-  const [activeTab, setActiveTab] = useState<"stepByStep" | "b3Examples" | "prompts" | "metrics" | "concepts" | "faq">("b3Examples");
+  const [activeTab, setActiveTab] = useState<"stepByStep" | "b3Examples" | "dayTrade" | "prompts" | "metrics" | "concepts" | "faq">("b3Examples");
 
   return (
     <div className="min-h-full bg-background p-6 md:p-10 space-y-8 max-w-6xl mx-auto">
@@ -119,6 +120,17 @@ export function Guide() {
         >
           <Target className="h-4 w-4 text-emerald-500" />
           <span>Exemplos Reais B3 (PETR4, VALE3)</span>
+        </button>
+        <button
+          onClick={() => setActiveTab("dayTrade")}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer shrink-0 ${
+            activeTab === "dayTrade"
+              ? "bg-amber-500/15 text-amber-500 border border-amber-500/40 font-bold"
+              : "text-muted-foreground hover:bg-muted hover:text-foreground"
+          }`}
+        >
+          <Zap className="h-4 w-4 text-amber-500" />
+          <span>Guia Exclusivo Day Trade</span>
         </button>
         <button
           onClick={() => setActiveTab("metrics")}
@@ -353,7 +365,108 @@ export function Guide() {
         </div>
       )}
 
-      {/* Tab: Options Metrics Explained */}
+      {/* Tab: Day Trade Guide */}
+      {activeTab === "dayTrade" && (
+        <div className="space-y-6">
+          <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-5 text-sm text-foreground">
+            <h3 className="font-semibold text-amber-500 flex items-center gap-2 mb-2 text-base">
+              <Zap className="h-5 w-5" />
+              Guia Exclusivo: Como a Inteligência Artificial Ajuda no Day Trade
+            </h3>
+            <p className="leading-relaxed text-muted-foreground">
+              No Day Trade (operações abertas e encerradas no mesmo pregão), a IA atua como o seu <strong>Analista de Mesa e Estrategista de Risco</strong>. Ela faz o trabalho pesado de cálculo e estudo matinal para você focar apenas na execução.
+            </p>
+          </div>
+
+          {/* Routine in 3 Times */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="rounded-xl border border-border bg-card p-5 space-y-3">
+              <div className="flex items-center gap-2 text-amber-500 font-bold text-sm">
+                <Clock className="h-4 w-4" />
+                <h4>1. Pré-Mercado (08:30 - 09:30)</h4>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Antes do pregão abrir, peça ao Agente os pontos de <strong>Pivot, Suportes e Resistências</strong> dos papéis mais líquidos (PETR4, VALE3, BOVA11) e o humor do mercado externo (Petróleo Brent e S&P 500 futuro).
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-border bg-card p-5 space-y-3">
+              <div className="flex items-center gap-2 text-blue-500 font-bold text-sm">
+                <Target className="h-4 w-4" />
+                <h4>2. Abertura (10:00 - 12:00)</h4>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Identifique rompimentos com volume. Para operar com opções no intraday, escolha contratos <strong>no dinheiro (ATM) com Delta alto (&gt; 0.50)</strong> para pegar valorizações rápidas de +30% a +60% em poucas horas.
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-border bg-card p-5 space-y-3">
+              <div className="flex items-center gap-2 text-emerald-500 font-bold text-sm">
+                <ShieldAlert className="h-4 w-4" />
+                <h4>3. Saída e Zeragem (Até 16:30)</h4>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Encerre todas as posições antes do fechamento do pregão. Ao zerar no mesmo dia, você <strong>anula 100% do risco de gap noturno e o efeito do Theta (perda pelo tempo)</strong>!
+              </p>
+            </div>
+          </div>
+
+          {/* Prompts for Day Trade */}
+          <div className="space-y-4">
+            <h4 className="text-base font-bold text-foreground flex items-center gap-2">
+              <Bot className="h-4 w-4 text-primary" />
+              Perguntas Prontas para o seu Dia de Day Trade (Copie com 1 Clique):
+            </h4>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <PromptCard
+                category="☀️ Pré-Mercado & Níveis"
+                badgeColor="bg-amber-500/10 text-amber-500"
+                title="Mapeamento de Suportes e Resistências do Dia"
+                description="Entrega os preços exatos onde a ação tende a travar ou romper durante o pregão de hoje."
+                prompt="Faça o estudo pré-mercado de PETR4 e VALE3 para o pregão de hoje. Quais são os pontos de Pivot, suportes e resistências para o intraday e qual o viés do mercado externo (S&P 500 futuro e commodities)?"
+              />
+
+              <PromptCard
+                category="🚀 Day Trade de Alta (Call)"
+                badgeColor="bg-emerald-500/10 text-emerald-500"
+                title="Opção de Alta Rápida no Intraday"
+                description="Encontra a opção com maior liquidez e Delta acelerado para surfar a alta da manhã."
+                prompt="Para um Day Trade de alta em [PETR4 ou BOVA11] hoje, qual strike de CALL possui Delta acima de 0.50 e maior liquidez para buscar valorização rápida no intraday com saída no mesmo pregão?"
+              />
+
+              <PromptCard
+                category="🔻 Day Trade de Baixa (Put)"
+                badgeColor="bg-rose-500/10 text-rose-500"
+                title="Opção de Queda para Correção Rápida"
+                description="Para lucrar na queda quando a ação perder a mínima do dia com fluxo vendedor."
+                prompt="A ação [VALE3] perdeu a mínima do dia com aumento de volume vendedor. Sugira uma opção de venda (PUT) no dinheiro com Delta próximo a -0.50 para um trade rápido de queda no pregão de hoje."
+              />
+
+              <PromptCard
+                category="🎯 Stop & Alvo Risco/Retorno"
+                badgeColor="bg-blue-500/10 text-blue-500"
+                title="Definição Matemática de Gain e Loss"
+                description="Calcula os pontos exatos de saída com relação risco x retorno de 1 para 3 antes de abrir a ordem."
+                prompt="Quero entrar em um Day Trade na opção [CÓDIGO] comprando a R$ 0,40. Onde devo posicionar meu Stop Loss e meu Alvo de Saída (Take Profit) para garantir uma relação matemática de risco/retorno de pelo menos 1 para 3?"
+              />
+            </div>
+          </div>
+
+          {/* Golden Rules */}
+          <div className="rounded-xl border border-border bg-card p-5 space-y-3">
+            <h4 className="font-bold text-foreground text-sm flex items-center gap-2 text-primary">
+              <ShieldAlert className="h-4 w-4" />
+              Regras de Ouro para Day Trade com IA:
+            </h4>
+            <ul className="text-xs text-muted-foreground space-y-2 list-disc list-inside leading-relaxed">
+              <li><strong>A IA é o seu Copiloto de Estratégia:</strong> Use-a para planejar os pontos de entrada, alvos e contratos. A execução do clique em milissegundos é feita no seu Home Broker / plataforma de trading.</li>
+              <li><strong>Risco 100% Controlado:</strong> Nunca arrisque mais do que 1% do seu capital total em uma única operação de Day Trade.</li>
+              <li><strong>Disciplina de Encerramento:</strong> Se atingiu o alvo (Gain) ou o limite de perda (Stop), encerre a posição sem hesitar.</li>
+            </ul>
+          </div>
+        </div>
+      )}
       {activeTab === "metrics" && (
         <div className="space-y-6">
           <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-5 text-sm text-foreground">
