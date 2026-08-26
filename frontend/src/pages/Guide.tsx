@@ -12,7 +12,9 @@ import {
   ShieldAlert, 
   Clock, 
   ArrowRight,
-  HelpCircle
+  HelpCircle,
+  Calculator,
+  Target
 } from "lucide-react";
 
 interface PromptCardProps {
@@ -41,7 +43,7 @@ function PromptCard({ title, category, badgeColor, prompt, description }: Prompt
           </span>
           <button
             onClick={handleCopy}
-            className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-md border border-border bg-muted/60 hover:bg-primary/10 hover:text-primary transition-colors"
+            className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-md border border-border bg-muted/60 hover:bg-primary/10 hover:text-primary transition-colors cursor-pointer"
             title="Copiar pergunta para a área de transferência"
           >
             {copied ? (
@@ -69,7 +71,7 @@ function PromptCard({ title, category, badgeColor, prompt, description }: Prompt
 }
 
 export function Guide() {
-  const [activeTab, setActiveTab] = useState<"stepByStep" | "prompts" | "concepts" | "faq">("stepByStep");
+  const [activeTab, setActiveTab] = useState<"stepByStep" | "b3Examples" | "prompts" | "metrics" | "concepts" | "faq">("b3Examples");
 
   return (
     <div className="min-h-full bg-background p-6 md:p-10 space-y-8 max-w-6xl mx-auto">
@@ -84,7 +86,7 @@ export function Guide() {
             Como Usar o Vibe-Trading
           </h1>
           <p className="text-sm text-muted-foreground mt-1 max-w-2xl">
-            Passo a passo simples para analisar ações, encontrar opções com alto potencial e operar no curto prazo (até 7 dias) com apoio de Inteligência Artificial.
+            Passo a passo simples e exemplos reais na Bolsa Brasileira (B3) para analisar ações, encontrar opções com alto potencial e operar no tiro curto (1 a 7 dias).
           </p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
@@ -95,16 +97,45 @@ export function Guide() {
             <Bot className="h-4 w-4" />
             <span>Ir para o Agente</span>
           </Link>
+          <Link
+            to="/options"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-border bg-card hover:bg-muted text-foreground font-medium text-sm transition-all"
+          >
+            <CandlestickChart className="h-4 w-4" />
+            <span>Laboratório</span>
+          </Link>
         </div>
       </div>
 
       {/* Navigation Tabs */}
       <div className="flex items-center gap-2 border-b border-border/60 pb-2 overflow-x-auto">
         <button
+          onClick={() => setActiveTab("b3Examples")}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer shrink-0 ${
+            activeTab === "b3Examples"
+              ? "bg-primary/15 text-primary border border-primary/40 font-bold"
+              : "text-muted-foreground hover:bg-muted hover:text-foreground"
+          }`}
+        >
+          <Target className="h-4 w-4 text-emerald-500" />
+          <span>Exemplos Reais B3 (PETR4, VALE3)</span>
+        </button>
+        <button
+          onClick={() => setActiveTab("metrics")}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer shrink-0 ${
+            activeTab === "metrics"
+              ? "bg-primary/15 text-primary border border-primary/40 font-bold"
+              : "text-muted-foreground hover:bg-muted hover:text-foreground"
+          }`}
+        >
+          <Calculator className="h-4 w-4 text-blue-500" />
+          <span>Como Ler as Métricas de Opções</span>
+        </button>
+        <button
           onClick={() => setActiveTab("stepByStep")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer shrink-0 ${
             activeTab === "stepByStep"
-              ? "bg-primary/10 text-primary border border-primary/30"
+              ? "bg-primary/15 text-primary border border-primary/40 font-bold"
               : "text-muted-foreground hover:bg-muted hover:text-foreground"
           }`}
         >
@@ -113,31 +144,31 @@ export function Guide() {
         </button>
         <button
           onClick={() => setActiveTab("prompts")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer shrink-0 ${
             activeTab === "prompts"
-              ? "bg-primary/10 text-primary border border-primary/30"
+              ? "bg-primary/15 text-primary border border-primary/40 font-bold"
               : "text-muted-foreground hover:bg-muted hover:text-foreground"
           }`}
         >
           <Copy className="h-4 w-4" />
-          <span>Modelos de Perguntas (Copiar e Colar)</span>
+          <span>Banco de Perguntas</span>
         </button>
         <button
           onClick={() => setActiveTab("concepts")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer shrink-0 ${
             activeTab === "concepts"
-              ? "bg-primary/10 text-primary border border-primary/30"
+              ? "bg-primary/15 text-primary border border-primary/40 font-bold"
               : "text-muted-foreground hover:bg-muted hover:text-foreground"
           }`}
         >
           <CandlestickChart className="h-4 w-4" />
-          <span>Conceitos Essenciais</span>
+          <span>Conceitos Rápidos</span>
         </button>
         <button
           onClick={() => setActiveTab("faq")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer shrink-0 ${
             activeTab === "faq"
-              ? "bg-primary/10 text-primary border border-primary/30"
+              ? "bg-primary/15 text-primary border border-primary/40 font-bold"
               : "text-muted-foreground hover:bg-muted hover:text-foreground"
           }`}
         >
@@ -146,7 +177,260 @@ export function Guide() {
         </button>
       </div>
 
-      {/* Tab Content */}
+      {/* Tab: B3 Real Examples */}
+      {activeTab === "b3Examples" && (
+        <div className="space-y-6">
+          <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-5 text-sm text-foreground">
+            <h3 className="font-semibold text-emerald-500 flex items-center gap-2 mb-2 text-base">
+              <Target className="h-5 w-5" />
+              Cenários Práticos de Operação na B3 (Tiro Curto de 1 a 7 Dias)
+            </h3>
+            <p className="leading-relaxed text-muted-foreground">
+              Abaixo estão os 3 modelos de operação mais utilizados no mercado brasileiro. Você pode <strong>copiar a pergunta com 1 clique</strong> e colar diretamente no Agente:
+            </p>
+          </div>
+
+          {/* Scenario 1: PETR4 Call */}
+          <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-4">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-border/60 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-1 rounded-md bg-emerald-500/15 text-emerald-500 font-bold text-xs">
+                  CENÁRIO 1 · ALTA
+                </span>
+                <h3 className="text-lg font-bold text-foreground">Petrobras (PETR4) — Compra de CALL para Tiro de 7 Dias</h3>
+              </div>
+              <span className="text-xs text-muted-foreground">Alvo: 5 a 7 dias úteis</span>
+            </div>
+
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              <strong>Situação:</strong> PETR4 está cotada a R$ 42,00. Os indicadores mostram que o papel rompeu uma resistência e tem força para buscar R$ 44,00 nesta semana.
+            </p>
+
+            <div className="bg-muted/70 p-4 rounded-xl space-y-3 border border-border/50">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                  <Bot className="h-4 w-4 text-primary" />
+                  Pergunta Pronta para o Agente:
+                </span>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText("Analise o papel PETR4 nos últimos 30 dias. A tendência para os próximos 5 a 7 dias úteis é de alta? Se sim, sugira uma opção de compra (CALL a seco ou Trava de Alta) com strike próximo a R$ 42,50, trazendo o Breakeven, a perda máxima travada, o lucro projetado e o Theta diário.");
+                    alert("Pergunta copiada! Cole no chat do Agente.");
+                  }}
+                  className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-md border border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 transition-colors cursor-pointer"
+                >
+                  <Copy className="h-3.5 w-3.5" />
+                  <span>Copiar esta Pergunta</span>
+                </button>
+              </div>
+              <p className="text-xs font-mono text-foreground/90 bg-background/60 p-3 rounded-lg border border-border/40 select-all">
+                "Analise o papel PETR4 nos últimos 30 dias. A tendência para os próximos 5 a 7 dias úteis é de alta? Se sim, sugira uma opção de compra (CALL a seco ou Trava de Alta) com strike próximo a R$ 42,50, trazendo o Breakeven, a perda máxima travada, o lucro projetado e o Theta diário."
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+              <div className="p-3 rounded-lg bg-muted/40 border border-border/40">
+                <div className="text-muted-foreground">Preço da Ação (Spot)</div>
+                <div className="font-bold text-foreground text-sm mt-0.5">R$ 42,00</div>
+              </div>
+              <div className="p-3 rounded-lg bg-muted/40 border border-border/40">
+                <div className="text-muted-foreground">Custo da Opção (Prêmio)</div>
+                <div className="font-bold text-emerald-500 text-sm mt-0.5">R$ 0,65 por opção</div>
+                <div className="text-[10px] text-muted-foreground">Gasta R$ 65 para controlar R$ 4.200</div>
+              </div>
+              <div className="p-3 rounded-lg bg-muted/40 border border-border/40">
+                <div className="text-muted-foreground">Ponto de Empate (Breakeven)</div>
+                <div className="font-bold text-foreground text-sm mt-0.5">R$ 43,15</div>
+                <div className="text-[10px] text-muted-foreground">Acima disso é 100% lucro</div>
+              </div>
+              <div className="p-3 rounded-lg bg-muted/40 border border-border/40">
+                <div className="text-muted-foreground">Retorno se bater R$ 44,50</div>
+                <div className="font-bold text-emerald-500 text-sm mt-0.5">+207% de Lucro</div>
+                <div className="text-[10px] text-muted-foreground">Opção vai para R$ 2,00</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Scenario 2: VALE3 Put */}
+          <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-4">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-border/60 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-1 rounded-md bg-rose-500/15 text-rose-500 font-bold text-xs">
+                  CENÁRIO 2 · BAIXA / PROTEÇÃO
+                </span>
+                <h3 className="text-lg font-bold text-foreground">Vale (VALE3) — Compra de PUT para Lucrar na Queda</h3>
+              </div>
+              <span className="text-xs text-muted-foreground">Alvo: 3 a 5 dias úteis</span>
+            </div>
+
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              <strong>Situação:</strong> VALE3 está a R$ 60,00 e o minério de ferro caiu forte. O papel perdeu suporte e pode corrigir até R$ 57,00.
+            </p>
+
+            <div className="bg-muted/70 p-4 rounded-xl space-y-3 border border-border/50">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                  <Bot className="h-4 w-4 text-primary" />
+                  Pergunta Pronta para o Agente:
+                </span>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText("A ação VALE3 mostra sinais de esgotamento e possível correção no curto prazo. Sugira uma opção de venda (PUT a seco ou Trava de Baixa) com strike próximo a R$ 59,00 para buscar rentabilidade na queda nos próximos 5 dias, limitando meu risco.");
+                    alert("Pergunta copiada! Cole no chat do Agente.");
+                  }}
+                  className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-md border border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 transition-colors cursor-pointer"
+                >
+                  <Copy className="h-3.5 w-3.5" />
+                  <span>Copiar esta Pergunta</span>
+                </button>
+              </div>
+              <p className="text-xs font-mono text-foreground/90 bg-background/60 p-3 rounded-lg border border-border/40 select-all">
+                "A ação VALE3 mostra sinais de esgotamento e possível correção no curto prazo. Sugira uma opção de venda (PUT a seco ou Trava de Baixa) com strike próximo a R$ 59,00 para buscar rentabilidade na queda nos próximos 5 dias, limitando meu risco."
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+              <div className="p-3 rounded-lg bg-muted/40 border border-border/40">
+                <div className="text-muted-foreground">Preço da Ação (Spot)</div>
+                <div className="font-bold text-foreground text-sm mt-0.5">R$ 60,00</div>
+              </div>
+              <div className="p-3 rounded-lg bg-muted/40 border border-border/40">
+                <div className="text-muted-foreground">Custo da PUT (Prêmio)</div>
+                <div className="font-bold text-rose-500 text-sm mt-0.5">R$ 0,70 por opção</div>
+                <div className="text-[10px] text-muted-foreground">Perda máxima: R$ 70 a cada 100 opções</div>
+              </div>
+              <div className="p-3 rounded-lg bg-muted/40 border border-border/40">
+                <div className="text-muted-foreground">Ponto de Empate (Breakeven)</div>
+                <div className="font-bold text-foreground text-sm mt-0.5">R$ 58,30</div>
+                <div className="text-[10px] text-muted-foreground">Abaixo disso é lucro puro na queda</div>
+              </div>
+              <div className="p-3 rounded-lg bg-muted/40 border border-border/40">
+                <div className="text-muted-foreground">Retorno se cair para R$ 57,00</div>
+                <div className="font-bold text-emerald-500 text-sm mt-0.5">+185% de Lucro</div>
+                <div className="text-[10px] text-muted-foreground">Opção vai para R$ 2,00</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Scenario 3: Trava de Alta Barata */}
+          <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-4">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-border/60 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-1 rounded-md bg-blue-500/15 text-blue-500 font-bold text-xs">
+                  CENÁRIO 3 · TRAVA DE ALTA (CUSTO QUASE ZERO)
+                </span>
+                <h3 className="text-lg font-bold text-foreground">Trava de Alta com CALL (Gastar Centavos e Travar o Risco)</h3>
+              </div>
+              <span className="text-xs text-muted-foreground">Estratégia mais segura</span>
+            </div>
+
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              <strong>Como funciona:</strong> Você compra a Call do strike 42,50 e vende a Call do strike 44,00. O valor que você recebe na venda paga mais da metade do custo da compra!
+            </p>
+
+            <div className="bg-muted/70 p-4 rounded-xl space-y-3 border border-border/50">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                  <Bot className="h-4 w-4 text-primary" />
+                  Pergunta Pronta para o Agente:
+                </span>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText("Quero montar uma Trava de Alta com CALL em PETR4 para 7 dias úteis gastando no máximo R$ 0,35 por ação. Quais strikes comprar e vender para ter a melhor relação risco x retorno com risco 100% delimitado?");
+                    alert("Pergunta copiada! Cole no chat do Agente.");
+                  }}
+                  className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-md border border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 transition-colors cursor-pointer"
+                >
+                  <Copy className="h-3.5 w-3.5" />
+                  <span>Copiar esta Pergunta</span>
+                </button>
+              </div>
+              <p className="text-xs font-mono text-foreground/90 bg-background/60 p-3 rounded-lg border border-border/40 select-all">
+                "Quero montar uma Trava de Alta com CALL em PETR4 para 7 dias úteis gastando no máximo R$ 0,35 por ação. Quais strikes comprar e vender para ter a melhor relação risco x retorno com risco 100% delimitado?"
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Options Metrics Explained */}
+      {activeTab === "metrics" && (
+        <div className="space-y-6">
+          <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-5 text-sm text-foreground">
+            <h3 className="font-semibold text-blue-500 flex items-center gap-2 mb-2 text-base">
+              <Calculator className="h-5 w-5" />
+              Guia Completo: Como Ler as Métricas de Opções
+            </h3>
+            <p className="leading-relaxed text-muted-foreground">
+              Entenda exatamente o que cada número significa para tomar decisões com segurança e rapidez:
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="rounded-xl border border-border bg-card p-5 space-y-3">
+              <div className="flex items-center gap-2 text-emerald-500 font-bold">
+                <Target className="h-4 w-4" />
+                <h4>Ponto de Equilíbrio (Breakeven)</h4>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                É o preço que a ação precisa atingir para você empatar o dinheiro investido. A partir desse centavo, todo movimento vira <strong>lucro líquido</strong> no seu bolso.
+              </p>
+              <div className="bg-muted/60 p-3 rounded-lg text-xs font-mono">
+                Breakeven = Strike da Opção + Prêmio Pago
+                <br />
+                <span className="text-muted-foreground text-[11px]">Exemplo: Strike R$ 42,50 + R$ 0,65 = <strong>R$ 43,15</strong></span>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-border bg-card p-5 space-y-3">
+              <div className="flex items-center gap-2 text-amber-500 font-bold">
+                <Clock className="h-4 w-4" />
+                <h4>Theta (Decaimento Diário do Tempo)</h4>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Mostra <strong>quantos centavos a opção perde por dia</strong> apenas pela passagem do tempo.
+              </p>
+              <div className="bg-muted/60 p-3 rounded-lg text-xs font-mono">
+                Theta = -R$ 0,04 / dia
+                <br />
+                <span className="text-muted-foreground text-[11px]">Se a ação ficar parada por 3 dias, a opção perde R$ 0,12. Por isso operações de 7 dias exigem movimento rápido!</span>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-border bg-card p-5 space-y-3">
+              <div className="flex items-center gap-2 text-blue-500 font-bold">
+                <TrendingUp className="h-4 w-4" />
+                <h4>Delta (Velocímetro & Probabilidade)</h4>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Mede quanto a opção anda para cada R$ 1,00 que a ação se move.
+              </p>
+              <div className="bg-muted/60 p-3 rounded-lg text-xs font-mono">
+                Delta = 0,50 (50%)
+                <br />
+                <span className="text-muted-foreground text-[11px]">Se a ação subir R$ 1,00, sua opção sobe R$ 0,50. Também indica cerca de 50% de chance de dar lucro no vencimento.</span>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-border bg-card p-5 space-y-3">
+              <div className="flex items-center gap-2 text-purple-500 font-bold">
+                <ShieldAlert className="h-4 w-4" />
+                <h4>Prejuízo Máximo (Risco Travado)</h4>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Ao comprar opções (a seco ou em travas), <strong>você NUNCA fica devendo para a corretora</strong>.
+              </p>
+              <div className="bg-muted/60 p-3 rounded-lg text-xs font-mono">
+                Perda Máxima = Apenas o valor do prêmio pago
+                <br />
+                <span className="text-muted-foreground text-[11px]">Se você comprou 500 opções a R$ 0,50 (R$ 250), o máximo que pode perder se tudo der errado são os R$ 250.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Step By Step */}
       {activeTab === "stepByStep" && (
         <div className="space-y-6">
           <div className="bg-primary/5 border border-primary/20 rounded-xl p-5 text-sm text-foreground">
@@ -173,7 +457,7 @@ export function Guide() {
                 <div className="bg-muted/60 p-3 rounded-lg text-xs space-y-1">
                   <span className="font-semibold text-foreground">O que o Agente avalia:</span>
                   <ul className="list-disc list-inside text-muted-foreground space-y-0.5">
-                    <li>Médias móveis e volume</li>
+                    <li>Médias móveis e volume da B3</li>
                     <li>Suportes e resistências</li>
                     <li>Notícias e momento (RSI)</li>
                   </ul>
@@ -247,7 +531,7 @@ export function Guide() {
         </div>
       )}
 
-      {/* Tab Content: Prompts */}
+      {/* Tab: Prompts */}
       {activeTab === "prompts" && (
         <div className="space-y-6">
           <p className="text-sm text-muted-foreground">
@@ -256,15 +540,15 @@ export function Guide() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <PromptCard
-              category="1. Análise da Ação"
+              category="1. Análise de Ações da B3"
               badgeColor="bg-blue-500/10 text-blue-500"
               title="Tendência e Níveis de Preço (5 a 7 Dias)"
               description="Verifica se a ação está com força compradora ou vendedora e onde estão os pontos de suporte e resistência."
-              prompt="Analise a ação [CÓDIGO, ex: PETR4, VALE3, BBAS3] nos últimos 30 dias. A tendência atual é de alta ou de baixa? Quais são os suportes, resistências e o alvo projetado para os próximos 5 a 7 dias úteis?"
+              prompt="Analise a ação [PETR4, VALE3, BBAS3 ou ITUB4] nos últimos 30 dias. A tendência atual é de alta ou de baixa? Quais são os suportes, resistências e o alvo projetado para os próximos 5 a 7 dias úteis?"
             />
 
             <PromptCard
-              category="1. Análise da Ação"
+              category="1. Análise de Ações da B3"
               badgeColor="bg-blue-500/10 text-blue-500"
               title="Indicadores de Momento e Volume"
               description="Checa se o papel está sobrecomprado (caro) ou sobrevendido (barato) para antecipar repiques."
@@ -272,7 +556,7 @@ export function Guide() {
             />
 
             <PromptCard
-              category="2. Alta (Call)"
+              category="2. Alta com Opções (Call)"
               badgeColor="bg-emerald-500/10 text-emerald-500"
               title="Sugestão de Compra de Call para Alta Curta"
               description="Quando você acredita que a ação vai subir nos próximos 3 a 7 dias e quer alavancar com pouco capital."
@@ -280,7 +564,7 @@ export function Guide() {
             />
 
             <PromptCard
-              category="2. Baixa (Put)"
+              category="2. Baixa com Opções (Put)"
               badgeColor="bg-rose-500/10 text-rose-500"
               title="Sugestão de Compra de Put para Queda"
               description="Quando você acredita que a ação vai corrigir ou cair e quer lucrar na descida com risco controlado."
@@ -306,7 +590,7 @@ export function Guide() {
         </div>
       )}
 
-      {/* Tab Content: Concepts */}
+      {/* Tab: Concepts */}
       {activeTab === "concepts" && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -319,7 +603,7 @@ export function Guide() {
                 Você compra uma <strong>CALL</strong> quando sua análise indica que a ação vai <strong>SUBIR</strong>.
               </p>
               <ul className="text-xs text-muted-foreground space-y-2 list-disc list-inside">
-                <li><strong>Custo Baixo:</strong> Você paga apenas centavos por opção (ex: R$ 0,30 por opção vs R$ 30,00 da ação).</li>
+                <li><strong>Custo Baixo:</strong> Você paga apenas centavos por opção (ex: R$ 0,65 por opção vs R$ 42,00 da ação).</li>
                 <li><strong>Alavancagem:</strong> Se a ação subir 3%, a opção pode valorizar 50%, 100% ou mais.</li>
                 <li><strong>Perda Máxima Limitada:</strong> Se a ação cair, você só perde o valor que pagou na opção, nada além disso.</li>
               </ul>
@@ -373,7 +657,7 @@ export function Guide() {
         </div>
       )}
 
-      {/* Tab Content: FAQ */}
+      {/* Tab: FAQ */}
       {activeTab === "faq" && (
         <div className="space-y-4">
           <div className="rounded-xl border border-border bg-card p-5 space-y-2">
