@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
 import { Link, Outlet, useLocation, useSearchParams } from "react-router";
-import { Activity, BarChart3, BookOpen, Bot, CalendarClock, CandlestickChart, Check, ChevronDown, FileText, Languages, Moon, Sun, Plus, Trash2, Pencil, MessageSquare, ChevronsLeft, ChevronsRight, Settings, Layers, Loader2, WalletCards } from "lucide-react";
+import { Activity, BarChart3, BookOpen, Bot, CalendarClock, CandlestickChart, Check, ChevronDown, FileText, Languages, Moon, Sun, Plus, Trash2, Pencil, MessageSquare, ChevronsLeft, ChevronsRight, Settings, Layers, Loader2, WalletCards, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useDarkMode } from "@/hooks/useDarkMode";
 import { api, type SessionItem } from "@/lib/api";
@@ -39,9 +39,15 @@ export function Layout() {
   const sseStatus = useAgentStore(s => s.sseStatus);
   const sseRetryAttempt = useAgentStore(s => s.sseRetryAttempt);
   const [collapsed, setCollapsed] = useState(() => safeGet("qa-sidebar") === "collapsed");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const activeSessionId = searchParams.get("session");
   const streamingSessionId = useAgentStore(s => s.streamingSessionId);
+
+  // Close mobile drawer on route / session change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname, activeSessionId]);
 
   useEffect(() => {
     safeSet("qa-sidebar", collapsed ? "collapsed" : "expanded");
@@ -98,39 +104,59 @@ export function Layout() {
   };
 
   return (
-    <div className="flex h-screen bg-background rtl:flex-row-reverse">
+    <div className="flex h-screen bg-background rtl:flex-row-reverse overflow-hidden">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[70] focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-foreground focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary/40"
       >
         {t('layout.skipToMain', { defaultValue: 'Skip to main content' })}
       </a>
+
+      {/* Mobile Drawer Backdrop */}
+      {mobileMenuOpen && (
+        <div 
+          onClick={() => setMobileMenuOpen(false)} 
+          className="fixed inset-0 bg-black/60 backdrop-blur-xs z-40 md:hidden animate-in fade-in duration-200"
+          aria-hidden="true"
+        />
+      )}
+
       {/* Sidebar */}
       <aside
         aria-label={t('layout.sidebar', { defaultValue: 'Vibe-Trading sidebar' })}
         className={cn(
-          "max-md:w-12 border-e border-border/60 bg-card flex flex-col shrink-0 transition-all duration-200 overflow-visible",
-          collapsed ? "w-12" : "w-64"
+          "border-e border-border/60 bg-card flex flex-col shrink-0 transition-all duration-200 overflow-visible",
+          "max-md:fixed max-md:inset-y-0 max-md:start-0 max-md:w-72 max-md:shadow-2xl max-md:z-50",
+          mobileMenuOpen ? "max-md:translate-x-0" : "max-md:-translate-x-full",
+          collapsed ? "md:w-12" : "md:w-64"
         )}
       >
-        {/* Brand */}
-        <div className={cn("border-b border-border/60", collapsed ? "p-2 flex justify-center" : "p-4 max-md:p-2 max-md:flex max-md:justify-center")}>
+        {/* Brand & Mobile Close Button */}
+        <div className={cn("border-b border-border/60 flex items-center justify-between", collapsed ? "p-2 md:justify-center" : "p-4")}>
           <Link
             to="/"
+            onClick={() => setMobileMenuOpen(false)}
             aria-label="Vibe-Trading"
-            className={cn("flex items-center", collapsed ? "justify-center" : "gap-2 max-md:justify-center")}
+            className={cn("flex items-center", collapsed ? "md:justify-center" : "gap-2")}
           >
             <BrandMark className="h-6 w-6 shrink-0" />
-            {!collapsed && (
-              <span className="text-[15px] font-semibold tracking-tight max-md:hidden">Vibe-Trading</span>
+            {(!collapsed || mobileMenuOpen) && (
+              <span className="text-[15px] font-semibold tracking-tight">Vibe-Trading</span>
             )}
           </Link>
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            className="p-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground md:hidden"
+            aria-label="Fechar Menu"
+          >
+            <X className="h-5 w-5" />
+          </button>
         </div>
 
         {/* Nav */}
         <nav
           aria-label={t('layout.mainNavigation', { defaultValue: 'Main navigation' })}
-          className={cn("space-y-0.5", collapsed ? "p-1" : "p-2 max-md:p-1")}
+          className={cn("space-y-0.5", collapsed ? "p-1 md:p-1" : "p-2")}
         >
           {NAV.map(({ to, icon: Icon, label }) => {
             const text = label;
@@ -138,10 +164,11 @@ export function Layout() {
               <Link
                 key={to}
                 to={to}
+                onClick={() => setMobileMenuOpen(false)}
                 aria-label={text}
                 className={cn(
                   "flex items-center rounded-md text-[13px] transition-colors",
-                  collapsed ? "justify-center px-2 py-1.5" : "gap-3 px-3 py-1.5 max-md:justify-center max-md:px-2",
+                  collapsed ? "md:justify-center md:px-2 md:py-1.5 px-3 py-2 gap-3" : "gap-3 px-3 py-1.5",
                   (to === "/" ? pathname === "/" || pathname.startsWith("/agent") : pathname.startsWith(to))
                     ? "bg-primary/10 text-primary font-medium"
                     : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
@@ -149,15 +176,15 @@ export function Layout() {
                 title={collapsed ? text : undefined}
               >
                 <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
-                {!collapsed && <span className="max-md:hidden">{text}</span>}
+                {(!collapsed || mobileMenuOpen) && <span>{text}</span>}
               </Link>
             );
           })}
         </nav>
 
-        {/* Sessions — hidden when collapsed */}
-        {!collapsed && (
-          <div className="flex-1 overflow-auto border-t border-border/60 mt-2 flex flex-col max-md:hidden">
+        {/* Sessions */}
+        {(!collapsed || mobileMenuOpen) && (
+          <div className="flex-1 overflow-auto border-t border-border/60 mt-2 flex flex-col">
             <div className="flex items-center justify-between px-4 py-2">
               <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
                 <MessageSquare className="h-3.5 w-3.5" />
@@ -165,6 +192,7 @@ export function Layout() {
               </span>
               <Link
                 to="/agent"
+                onClick={() => setMobileMenuOpen(false)}
                 aria-label={t('layout.newChat')}
                 className="flex items-center gap-1 p-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
                 title={t('layout.newChat')}
@@ -202,6 +230,7 @@ export function Layout() {
                     ) : (
                       <Link
                         to={`/agent?session=${s.session_id}`}
+                        onClick={() => setMobileMenuOpen(false)}
                         className={cn(
                           "flex-1 min-w-0 ps-3 pe-14 py-1.5 rounded-md text-xs transition-colors truncate block border-s-2",
                           isActive
@@ -214,8 +243,6 @@ export function Layout() {
                           {streamingSessionId === s.session_id ? (
                             <Loader2 className="h-3 w-3 shrink-0 animate-spin text-primary" />
                           ) : (
-                            // Transparent placeholder keeps titles aligned with
-                            // spinner rows without a meaningless gray dot.
                             <span className={cn(
                               "h-1.5 w-1.5 rounded-full shrink-0",
                               isActive ? "bg-primary/70" : "bg-transparent"
@@ -255,12 +282,12 @@ export function Layout() {
           </div>
         )}
 
-        {/* Spacer when collapsed */}
-        {collapsed && <div className="flex-1" />}
+        {/* Spacer when collapsed on desktop */}
+        {collapsed && !mobileMenuOpen && <div className="flex-1" />}
 
         {/* Footer */}
-        <div className={cn("mt-auto border-t border-border/60", collapsed ? "p-1 flex flex-col items-center gap-1" : "p-3 space-y-2 max-md:p-1 max-md:flex max-md:flex-col max-md:items-center max-md:gap-1 max-md:space-y-0")}>
-          {collapsed ? (
+        <div className={cn("mt-auto border-t border-border/60", collapsed ? "p-1 md:p-1 p-3 flex flex-col items-center gap-1" : "p-3 space-y-2")}>
+          {collapsed && !mobileMenuOpen ? (
             <>
               <button onClick={toggle} className="p-1.5 text-muted-foreground hover:text-foreground rounded transition-colors" title={dark ? t('layout.light') : t('layout.dark')}>
                 {dark ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
@@ -271,13 +298,13 @@ export function Layout() {
             </>
           ) : (
             <>
-              <div className="flex items-center justify-between max-md:flex-col">
+              <div className="flex items-center justify-between">
                 <button
                   onClick={toggle}
-                  className="flex items-center gap-1.5 p-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  className="flex items-center gap-1.5 p-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                 >
                   {dark ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
-                  <span className="max-md:hidden">{dark ? t('layout.light') : t('layout.dark')}</span>
+                  <span>{dark ? t('layout.light') : t('layout.dark')}</span>
                 </button>
                 <div className="flex items-center gap-1 max-md:hidden">
                   <button
@@ -289,14 +316,12 @@ export function Layout() {
                   </button>
                 </div>
               </div>
-              <div className="flex flex-col gap-1 max-md:items-center">
+              <div className="flex flex-col gap-1">
                 <LanguageSwitcher />
-                {/* About is marketing, not a work surface — it lives here by
-                    the version stamp instead of in the primary nav. */}
-                <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground/60 max-md:hidden">
+                <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground/60">
                   <span>{t('app.version')}</span>
                   <span aria-hidden="true">·</span>
-                  <Link to="/about" className="transition-colors hover:text-foreground">
+                  <Link to="/about" onClick={() => setMobileMenuOpen(false)} className="transition-colors hover:text-foreground">
                     {t('layout.about')}
                   </Link>
                 </div>
@@ -306,10 +331,44 @@ export function Layout() {
         </div>
       </aside>
 
-      {/* Main */}
-      <div className="relative flex-1 flex flex-col overflow-hidden">
+      {/* Main Container */}
+      <div className="relative flex-1 flex flex-col overflow-hidden min-w-0">
+        {/* Mobile Top Header */}
+        <header className="md:hidden flex items-center justify-between px-3 py-2 border-b border-border/60 bg-card/95 backdrop-blur-sm shrink-0 z-30">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="p-1.5 rounded-lg border border-border bg-muted/50 hover:bg-muted text-foreground transition-colors cursor-pointer"
+              aria-label="Abrir Menu"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+            <Link to="/" className="flex items-center gap-1.5">
+              <BrandMark className="h-5 w-5" />
+              <span className="text-sm font-bold tracking-tight">Vibe-Trading</span>
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            <Link
+              to="/guide"
+              className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-primary/10 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors"
+            >
+              <BookOpen className="h-3.5 w-3.5" />
+              <span>Guia</span>
+            </Link>
+            <Link
+              to="/agent"
+              className="p-1.5 rounded-md border border-border bg-muted/40 hover:bg-muted text-foreground transition-colors"
+              title="Nova Conversa"
+            >
+              <Plus className="h-4 w-4" />
+            </Link>
+          </div>
+        </header>
+
         <ConnectionBanner status={sseStatus} retryAttempt={sseRetryAttempt} />
-        <main id="main" className="flex-1 overflow-auto">
+        <main id="main" className="flex-1 overflow-auto min-w-0">
           <Outlet />
         </main>
       </div>

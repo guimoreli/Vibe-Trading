@@ -25,17 +25,17 @@ const markdownComponents: ReactMarkdownOptions["components"] = {
   table: ({ node, ...props }) => {
     void node;
     return (
-      <div className="overflow-x-auto">
-        <table {...props} />
+      <div className="overflow-x-auto my-3 rounded-lg border border-border/70 bg-card/50 shadow-xs">
+        <table className="min-w-full text-xs sm:text-sm" {...props} />
       </div>
     );
   },
   a: ({ node, ...props }) => {
     void node;
-    return <a {...props} target="_blank" rel="noopener noreferrer" />;
+    return <a {...props} target="_blank" rel="noopener noreferrer" className="text-primary underline font-medium" />;
   },
 };
-const proseClassName = "prose prose-sm dark:prose-invert max-w-none text-[15px] leading-relaxed prose-p:font-serif prose-p:text-[15.5px] prose-p:leading-[1.75] prose-li:font-serif prose-li:text-[15.5px] prose-li:leading-[1.75] prose-headings:font-sans prose-table:font-sans prose-code:font-mono prose-blockquote:font-sans [&_blockquote_p]:font-sans prose-table:border prose-table:border-border/50 prose-th:bg-muted/30 prose-th:px-3 prose-th:py-1.5 prose-td:px-3 prose-td:py-1.5 prose-th:text-left prose-th:text-xs prose-th:font-medium prose-td:text-xs prose-hr:hidden";
+const proseClassName = "prose prose-base dark:prose-invert max-w-none text-[16px] sm:text-[15.5px] leading-relaxed prose-p:font-sans prose-p:text-[16px] sm:prose-p:text-[15.5px] prose-p:leading-[1.75] prose-li:font-sans prose-li:text-[16px] sm:prose-li:text-[15.5px] prose-li:leading-[1.75] prose-headings:font-sans prose-table:font-sans prose-code:font-mono prose-blockquote:font-sans [&_blockquote_p]:font-sans prose-table:border prose-table:border-border/50 prose-th:bg-muted/40 prose-th:px-3.5 prose-th:py-2.5 prose-td:px-3.5 prose-td:py-2.5 prose-th:text-left prose-th:text-xs sm:prose-th:text-xs prose-th:font-semibold prose-td:text-xs sm:prose-td:text-xs prose-hr:hidden";
 
 interface MarkdownErrorBoundaryProps {
   content: string;

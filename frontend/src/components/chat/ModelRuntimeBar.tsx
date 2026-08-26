@@ -35,7 +35,7 @@ export function ModelRuntimeBar({
   const effortLabel = effortLabels[reasoningEffort] || t("settings.providerDefault");
 
   return (
-    <div className="shrink-0 border-b border-border/70 bg-background/95 px-6 py-2 backdrop-blur-sm">
+    <div className="shrink-0 border-b border-border/70 bg-background/95 px-3 sm:px-6 py-1.5 sm:py-2 backdrop-blur-sm">
       <div className="mx-auto flex max-w-3xl items-center gap-2 overflow-hidden text-xs">
         <span className="relative flex h-2 w-2 shrink-0" aria-hidden="true">
           <span className="absolute inline-flex h-full w-full rounded-full bg-success/30" />
