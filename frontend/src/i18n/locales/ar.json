@@ -28,7 +28,8 @@
     "skipToMain": "تخطَّ إلى المحتوى الرئيسي",
     "sidebar": "الشريط الجانبي لـ Vibe-Trading",
     "mainNavigation": "التنقل الرئيسي",
-    "about": "حول"
+    "about": "حول",
+    "guide": "دليل الاستخدام"
   },
   "runtime": {
     "monitorBadge": "مراقبة التداول",

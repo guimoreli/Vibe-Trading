@@ -33,7 +33,8 @@
     "skipToMain": "Skip to main content",
     "sidebar": "Vibe-Trading sidebar",
     "mainNavigation": "Main navigation",
-    "about": "About"
+    "about": "About",
+    "guide": "User Guide"
   },
   "runtime": {
     "monitorBadge": "Runtime Monitor",

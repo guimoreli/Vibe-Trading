@@ -33,7 +33,8 @@
     "skipToMain": "Ir para o conteúdo principal",
     "sidebar": "Barra lateral do Vibe-Trading",
     "mainNavigation": "Navegação principal",
-    "about": "Sobre"
+    "about": "Sobre",
+    "guide": "Como Usar"
   },
   "runtime": {
     "monitorBadge": "Monitor de Execução",

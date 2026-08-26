@@ -3,11 +3,13 @@ import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { safeRemove } from "@/lib/storage";
 import en from "./locales/en.json";
+import ptBR from "./locales/pt-BR.json";
 
 // Language registry — keep in sync with the Layout switcher and README_xx.md.
 // `dir` flags whether the language is right-to-left so the app can mirror the
 // layout (sidebar on the right, etc.) when needed.
 export const SUPPORTED_LANGUAGES = [
+  { code: "pt-BR", label: "Português (BR)", dir: "ltr" as const },
   { code: "en", label: "English", dir: "ltr" as const },
   { code: "zh-CN", label: "中文", dir: "ltr" as const },
   { code: "ja", label: "日本語", dir: "ltr" as const },
@@ -15,11 +17,10 @@ export const SUPPORTED_LANGUAGES = [
   { code: "ar", label: "العربية", dir: "rtl" as const },
   { code: "es", label: "Español", dir: "ltr" as const },
   { code: "de", label: "Deutsch", dir: "ltr" as const },
-  { code: "pt-BR", label: "Português (BR)", dir: "ltr" as const },
 ] as const;
 
 export type SupportedLanguageCode = (typeof SUPPORTED_LANGUAGES)[number]["code"];
-type LazyLanguageCode = Exclude<SupportedLanguageCode, "en">;
+type LazyLanguageCode = Exclude<SupportedLanguageCode, "pt-BR" | "en">;
 
 const localeLoaders = {
   "zh-CN": () => import("./locales/zh-CN.json"),
@@ -28,14 +29,13 @@ const localeLoaders = {
   ar: () => import("./locales/ar.json"),
   es: () => import("./locales/es.json"),
   de: () => import("./locales/de.json"),
-  "pt-BR": () => import("./locales/pt-BR.json"),
 } satisfies Record<LazyLanguageCode, () => Promise<{ default: typeof en }>>;
 
 const LANGUAGE_STORAGE_KEY = "i18nextLng";
 const LOCALE_LOAD_ATTEMPTS = 2;
-const loadedLanguages = new Set<SupportedLanguageCode>(["en"]);
+const loadedLanguages = new Set<SupportedLanguageCode>(["pt-BR", "en"]);
 const loadingLanguages = new Map<LazyLanguageCode, Promise<void>>();
-let lastStableLanguage: SupportedLanguageCode = "en";
+let lastStableLanguage: SupportedLanguageCode = "pt-BR";
 
 function getLazyLanguage(code: string): LazyLanguageCode | undefined {
   return (Object.keys(localeLoaders) as LazyLanguageCode[]).find(
@@ -93,7 +93,7 @@ i18n.on("languageChanged", (lng) => {
 
   const lazyLanguage = getLazyLanguage(lng);
   if (!lazyLanguage) {
-    lastStableLanguage = "en";
+    lastStableLanguage = "pt-BR";
     return;
   }
   if (loadedLanguages.has(lazyLanguage)) {
@@ -131,14 +131,13 @@ i18n
   .use(initReactI18next)
   .init({
     resources: {
+      "pt-BR": { translation: ptBR },
       en: { translation: en },
     },
     initAsync: false,
-    // Default to English for everyone on first visit; only an explicit toggle
-    // (persisted to localStorage) switches language. After a manual choice
-    // the navigator value can act as a fallback when the saved language is
-    // removed.
-    fallbackLng: "en",
+    // Default to Portuguese (BR) on first visit; an explicit toggle
+    // (persisted to localStorage) switches language.
+    fallbackLng: "pt-BR",
     supportedLngs: SUPPORTED_LANGUAGES.map((l) => l.code),
     // NOTE: Intentionally NOT using nonExplicitSupportedLngs — it strips
     // region codes from compound language keys like "zh-CN" which causes
@@ -157,7 +156,7 @@ i18n
     },
   });
 
-applyDocumentDirection(i18n.language || "en");
+applyDocumentDirection(i18n.language || "pt-BR");
 i18n.on("initialized", () => {
   if (i18n.language) applyDocumentDirection(i18n.language);
 });

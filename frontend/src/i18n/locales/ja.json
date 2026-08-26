@@ -28,7 +28,8 @@
     "skipToMain": "メインコンテンツへスキップ",
     "sidebar": "Vibe-Trading サイドバー",
     "mainNavigation": "メインナビゲーション",
-    "about": "概要"
+    "about": "概要",
+    "guide": "利用ガイド"
   },
   "runtime": {
     "monitorBadge": "取引モニター",

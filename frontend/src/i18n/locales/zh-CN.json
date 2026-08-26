@@ -28,7 +28,8 @@
     "skipToMain": "跳转到主要内容",
     "sidebar": "Vibe-Trading 侧边栏",
     "mainNavigation": "主导航",
-    "about": "关于"
+    "about": "关于",
+    "guide": "使用指南"
   },
   "runtime": {
     "monitorBadge": "交易监控",
