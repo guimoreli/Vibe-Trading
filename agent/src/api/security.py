@@ -5,6 +5,7 @@ from __future__ import annotations
 import hmac
 import ipaddress
 import logging
+import os
 import re
 import secrets
 import threading
@@ -165,6 +166,8 @@ def _get_cors_origins() -> List[str]:
 
 async def _reject_untrusted_loopback_host(request: Request, call_next):
     """Block DNS-rebinding Host headers before loopback auth bypasses run."""
+    if os.getenv("VIBE_TRADING_ALLOW_REMOTE_ACCESS", "").lower() in {"1", "true", "yes", "on"}:
+        return await call_next(request)
     if _is_local_client(request) and not _is_allowed_loopback_host(request.headers.get("host", "")):
         return JSONResponse(
             status_code=status.HTTP_403_FORBIDDEN,
