@@ -19,6 +19,14 @@ const PROXY_PATHS = [
   "/options",
 ];
 
+const removeCrossOriginPlugin = () => ({
+  name: "remove-crossorigin",
+  enforce: "post" as const,
+  transformIndexHtml(html: string) {
+    return html.replace(/\s*crossorigin(?:="[^"]*")?/g, "");
+  },
+});
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   const apiTarget = env.VITE_API_URL || "http://127.0.0.1:8899";
@@ -33,7 +41,7 @@ export default defineConfig(({ mode }) => {
   };
 
   return {
-    plugins: [react()],
+    plugins: [react(), removeCrossOriginPlugin()],
     resolve: {
       alias: { "@": path.resolve(import.meta.dirname, "./src") },
     },
