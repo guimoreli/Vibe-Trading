@@ -17,6 +17,7 @@ import {
   Target,
   Zap
 } from "lucide-react";
+import { toast } from "sonner";
 
 interface PromptCardProps {
   title: string;
@@ -227,7 +228,7 @@ export function Guide() {
                 <button
                   onClick={() => {
                     navigator.clipboard.writeText("Analise o papel PETR4 nos últimos 30 dias. A tendência para os próximos 5 a 7 dias úteis é de alta? Se sim, sugira uma opção de compra (CALL a seco ou Trava de Alta) com strike próximo a R$ 42,50, trazendo o Breakeven, a perda máxima travada, o lucro projetado e o Theta diário.");
-                    alert("Pergunta copiada! Cole no chat do Agente.");
+                    toast.success("Pergunta copiada! Cole no chat do Agente.");
                   }}
                   className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-md border border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 transition-colors cursor-pointer"
                 >
@@ -288,7 +289,7 @@ export function Guide() {
                 <button
                   onClick={() => {
                     navigator.clipboard.writeText("A ação VALE3 mostra sinais de esgotamento e possível correção no curto prazo. Sugira uma opção de venda (PUT a seco ou Trava de Baixa) com strike próximo a R$ 59,00 para buscar rentabilidade na queda nos próximos 5 dias, limitando meu risco.");
-                    alert("Pergunta copiada! Cole no chat do Agente.");
+                    toast.success("Pergunta copiada! Cole no chat do Agente.");
                   }}
                   className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-md border border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 transition-colors cursor-pointer"
                 >
@@ -349,7 +350,7 @@ export function Guide() {
                 <button
                   onClick={() => {
                     navigator.clipboard.writeText("Quero montar uma Trava de Alta com CALL em PETR4 para 7 dias úteis gastando no máximo R$ 0,35 por ação. Quais strikes comprar e vender para ter a melhor relação risco x retorno com risco 100% delimitado?");
-                    alert("Pergunta copiada! Cole no chat do Agente.");
+                    toast.success("Pergunta copiada! Cole no chat do Agente.");
                   }}
                   className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-md border border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 transition-colors cursor-pointer"
                 >

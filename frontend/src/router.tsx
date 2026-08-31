@@ -1,20 +1,18 @@
 import { Suspense, lazy, type ComponentType } from "react";
 import { createBrowserRouter } from "react-router";
 import { Layout } from "@/components/layout/Layout";
+import { Agent } from "@/pages/Agent";
+import { Guide } from "@/pages/Guide";
+import { OptionsLab } from "@/pages/OptionsLab";
+import { Settings } from "@/pages/Settings";
+import { Runtime } from "@/pages/Runtime";
+import { Home } from "@/pages/Home";
 
-const Home = lazy(() => import("@/pages/Home").then((m) => ({ default: m.Home })));
-const Agent = lazy(() => import("@/pages/Agent").then((m) => ({ default: m.Agent })));
 const RunDetail = lazy(() =>
   import("@/pages/RunDetail").then((m) => ({ default: m.RunDetail })),
 );
 const Compare = lazy(() =>
   import("@/pages/Compare").then((m) => ({ default: m.Compare })),
-);
-const Settings = lazy(() =>
-  import("@/pages/Settings").then((m) => ({ default: m.Settings })),
-);
-const Runtime = lazy(() =>
-  import("@/pages/Runtime").then((m) => ({ default: m.Runtime })),
 );
 const Scheduled = lazy(() =>
   import("@/pages/Scheduled").then((m) => ({ default: m.Scheduled })),
@@ -30,12 +28,6 @@ const Correlation = lazy(() =>
 );
 const AlphaZoo = lazy(() =>
   import("@/pages/AlphaZoo").then((m) => ({ default: m.AlphaZoo })),
-);
-const OptionsLab = lazy(() =>
-  import("@/pages/OptionsLab").then((m) => ({ default: m.OptionsLab })),
-);
-const Guide = lazy(() =>
-  import("@/pages/Guide").then((m) => ({ default: m.Guide })),
 );
 
 function PageLoader() {
@@ -58,21 +50,21 @@ export const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
-      { path: "/", element: wrap(Agent) },
-      { path: "/about", element: wrap(Home) },
-      { path: "/guide", element: wrap(Guide) },
-      { path: "/guia", element: wrap(Guide) },
-      { path: "/manual", element: wrap(Guide) },
-      { path: "/agent", element: wrap(Agent) },
-      { path: "/runtime", element: wrap(Runtime) },
+      { path: "/", element: <Agent /> },
+      { path: "/about", element: <Home /> },
+      { path: "/guide", element: <Guide /> },
+      { path: "/guia", element: <Guide /> },
+      { path: "/manual", element: <Guide /> },
+      { path: "/agent", element: <Agent /> },
+      { path: "/runtime", element: <Runtime /> },
+      { path: "/options", element: <OptionsLab /> },
+      { path: "/settings", element: <Settings /> },
       { path: "/scheduled", element: wrap(Scheduled) },
       { path: "/reports", element: wrap(Reports) },
       { path: "/portfolio", element: wrap(Portfolio) },
-      { path: "/settings", element: wrap(Settings) },
       { path: "/runs/:runId", element: wrap(RunDetail) },
       { path: "/compare", element: wrap(Compare) },
       { path: "/correlation", element: wrap(Correlation) },
-      { path: "/options", element: wrap(OptionsLab) },
       { path: "/alpha-zoo", element: wrap(AlphaZoo) },
       { path: "/alpha-zoo/bench", element: wrap(AlphaZoo) },
       { path: "/alpha-zoo/compare", element: wrap(AlphaZoo) },
