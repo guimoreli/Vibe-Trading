@@ -8,6 +8,21 @@ import { router } from "./router";
 import "highlight.js/styles/github-dark-dimmed.min.css";
 import "./index.css";
 
+// Handle Vite dynamic import / CSS preload glitches (e.g. after new deployments or Cloudflare Access session refresh)
+window.addEventListener("vite:preloadError", (event) => {
+  console.warn("Vite preload error intercepted:", event);
+  event.preventDefault();
+  
+  const reloadKey = "vibe_preload_retry";
+  const lastReload = sessionStorage.getItem(reloadKey);
+  const now = Date.now();
+  
+  if (!lastReload || now - Number(lastReload) > 10000) {
+    sessionStorage.setItem(reloadKey, String(now));
+    window.location.reload();
+  }
+});
+
 const prefetchMiniEquityChart = () => {
   void import("@/components/charts/MiniEquityChart");
 };
