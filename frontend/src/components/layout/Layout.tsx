@@ -191,7 +191,7 @@ export function Layout() {
                 {t('layout.sessions')}
               </span>
               <Link
-                to="/agent"
+                to="/agent?new=1"
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label={t('layout.newChat')}
                 className="flex items-center gap-1 p-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
@@ -358,7 +358,7 @@ export function Layout() {
               <span>Guia</span>
             </Link>
             <Link
-              to="/agent"
+              to="/agent?new=1"
               className="p-1.5 rounded-md border border-border bg-muted/40 hover:bg-muted text-foreground transition-colors"
               title="Nova Conversa"
             >

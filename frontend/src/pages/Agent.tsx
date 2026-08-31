@@ -1214,6 +1214,18 @@ export function Agent() {
     }
   }, [urlSessionId, doDisconnect, loadSessionMessages, setupSSE, forceScrollToBottom]);
 
+  // Auto-load the most recent session if visiting root without ?session and not explicitly requesting ?new=1
+  const isNewSessionRequested = searchParams.get("new") === "1";
+  useEffect(() => {
+    if (!urlSessionId && !isNewSessionRequested) {
+      api.listSessions().then((list) => {
+        if (Array.isArray(list) && list.length > 0 && list[0]?.session_id) {
+          setSearchParams({ session: list[0].session_id }, { replace: true });
+        }
+      }).catch(() => {});
+    }
+  }, [urlSessionId, isNewSessionRequested, setSearchParams]);
+
   useEffect(() => {
     if (!sessionId) {
       setGoalSnapshot(null);
