@@ -2,79 +2,40 @@ import { Suspense, lazy, type ComponentType } from "react";
 import { createBrowserRouter } from "react-router";
 import { Layout } from "@/components/layout/Layout";
 
-function lazyWithRetry<T extends ComponentType<any>>(
-  factory: () => Promise<{ default: T }>,
-  name?: string
-) {
-  return lazy(async () => {
-    try {
-      return await factory();
-    } catch (error: unknown) {
-      console.warn(`Dynamic chunk load retry for ${name || "component"}:`, error);
-      const msg = error instanceof Error ? error.message : String(error);
-      
-      // If it's a CSS preload failure or chunk mismatch after new deploy / Cloudflare Access refresh
-      if (msg.includes("Unable to preload CSS") || msg.includes("Failed to fetch dynamically imported module")) {
-        try {
-          return await factory();
-        } catch {
-          const retryKey = `vibe_route_retry_${name || "chunk"}`;
-          if (!sessionStorage.getItem(retryKey)) {
-            sessionStorage.setItem(retryKey, "1");
-            window.location.reload();
-          }
-        }
-      }
-      throw error;
-    }
-  });
-}
-
-const Home = lazyWithRetry(() => import("@/pages/Home").then((m) => ({ default: m.Home })), "Home");
-const Agent = lazyWithRetry(() => import("@/pages/Agent").then((m) => ({ default: m.Agent })), "Agent");
-const RunDetail = lazyWithRetry(
-  () => import("@/pages/RunDetail").then((m) => ({ default: m.RunDetail })),
-  "RunDetail"
+const Home = lazy(() => import("@/pages/Home").then((m) => ({ default: m.Home })));
+const Agent = lazy(() => import("@/pages/Agent").then((m) => ({ default: m.Agent })));
+const RunDetail = lazy(() =>
+  import("@/pages/RunDetail").then((m) => ({ default: m.RunDetail })),
 );
-const Compare = lazyWithRetry(
-  () => import("@/pages/Compare").then((m) => ({ default: m.Compare })),
-  "Compare"
+const Compare = lazy(() =>
+  import("@/pages/Compare").then((m) => ({ default: m.Compare })),
 );
-const Settings = lazyWithRetry(
-  () => import("@/pages/Settings").then((m) => ({ default: m.Settings })),
-  "Settings"
+const Settings = lazy(() =>
+  import("@/pages/Settings").then((m) => ({ default: m.Settings })),
 );
-const Runtime = lazyWithRetry(
-  () => import("@/pages/Runtime").then((m) => ({ default: m.Runtime })),
-  "Runtime"
+const Runtime = lazy(() =>
+  import("@/pages/Runtime").then((m) => ({ default: m.Runtime })),
 );
-const Scheduled = lazyWithRetry(
-  () => import("@/pages/Scheduled").then((m) => ({ default: m.Scheduled })),
-  "Scheduled"
+const Scheduled = lazy(() =>
+  import("@/pages/Scheduled").then((m) => ({ default: m.Scheduled })),
 );
-const Reports = lazyWithRetry(
-  () => import("@/pages/Reports").then((m) => ({ default: m.Reports })),
-  "Reports"
+const Reports = lazy(() =>
+  import("@/pages/Reports").then((m) => ({ default: m.Reports })),
 );
-const Portfolio = lazyWithRetry(
-  () => import("@/pages/Portfolio").then((m) => ({ default: m.Portfolio })),
-  "Portfolio"
+const Portfolio = lazy(() =>
+  import("@/pages/Portfolio").then((m) => ({ default: m.Portfolio })),
 );
-const Correlation = lazyWithRetry(
-  () => import("@/pages/Correlation").then((m) => ({ default: m.Correlation })),
-  "Correlation"
+const Correlation = lazy(() =>
+  import("@/pages/Correlation").then((m) => ({ default: m.Correlation })),
 );
-const AlphaZoo = lazyWithRetry(
-  () => import("@/pages/AlphaZoo").then((m) => ({ default: m.AlphaZoo })),
-  "AlphaZoo"
+const AlphaZoo = lazy(() =>
+  import("@/pages/AlphaZoo").then((m) => ({ default: m.AlphaZoo })),
 );
-const OptionsLab = lazyWithRetry(
-  () => import("@/pages/OptionsLab").then((m) => ({ default: m.OptionsLab })),
-  "OptionsLab"
+const OptionsLab = lazy(() =>
+  import("@/pages/OptionsLab").then((m) => ({ default: m.OptionsLab })),
 );
-const Guide = lazyWithRetry(
-  () => import("@/pages/Guide").then((m) => ({ default: m.Guide })),
-  "Guide"
+const Guide = lazy(() =>
+  import("@/pages/Guide").then((m) => ({ default: m.Guide })),
 );
 
 function PageLoader() {
